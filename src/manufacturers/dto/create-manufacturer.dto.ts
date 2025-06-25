@@ -8,7 +8,4 @@ export class CreateManufacturerDto {
   @IsUUID()
   @IsNotEmpty({ message: 'countryId is required' })
   countryId: string;
-
-  @IsOptional()
-  isActive?: boolean;
 }

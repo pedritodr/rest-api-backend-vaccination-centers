@@ -1,0 +1,47 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { VaccineBatchesService } from './vaccine-batches.service';
+import { CreateVaccineBatchDto } from './dto/create-vaccine-batch.dto';
+import { UpdateVaccineBatchDto } from './dto/update-vaccine-batch.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+@ApiBearerAuth()
+@ApiTags('Vaccine batches')
+@Controller('vaccine-batches')
+export class VaccineBatchesController {
+  constructor(private readonly vaccineBatchesService: VaccineBatchesService) {}
+
+  @Post()
+  create(@Body() createVaccineBatchDto: CreateVaccineBatchDto) {
+    return this.vaccineBatchesService.create(createVaccineBatchDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.vaccineBatchesService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.vaccineBatchesService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateVaccineBatchDto: UpdateVaccineBatchDto,
+  ) {
+    return this.vaccineBatchesService.update(id, updateVaccineBatchDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.vaccineBatchesService.remove(id);
+  }
+}

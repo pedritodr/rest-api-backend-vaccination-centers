@@ -9,6 +9,9 @@ import { CountriesModule } from './countries/countries.module';
 import { VaccinationCentersModule } from './vaccination-centers/vaccination-centers.module';
 import { PatientsModule } from './patients/patients.module';
 import { ManufacturersModule } from './manufacturers/manufacturers.module';
+import { VaccinesModule } from './vaccines/vaccines.module';
+import { VaccineBatchesModule } from './vaccine-batches/vaccine-batches.module';
+import { AppliedDosesModule } from './applied-doses/applied-doses.module';
 
 @Module({
   imports: [
@@ -42,6 +45,9 @@ import { ManufacturersModule } from './manufacturers/manufacturers.module';
     VaccinationCentersModule,
     PatientsModule,
     ManufacturersModule,
+    VaccinesModule,
+    VaccineBatchesModule,
+    AppliedDosesModule,
   ],
   controllers: [],
   providers: [],

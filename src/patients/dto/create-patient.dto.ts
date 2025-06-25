@@ -1,5 +1,11 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MinLength,
+} from 'class-validator';
 
 export class CreatePatientDto {
   @Transform(({ value }) => value.trim())
@@ -15,6 +21,7 @@ export class CreatePatientDto {
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(10)
@@ -34,4 +41,8 @@ export class CreatePatientDto {
   @Transform(({ value }) => value.trim())
   @IsString()
   dateOfBirth: Date;
+
+  @IsOptional()
+  @IsUUID()
+  representativeId?: string;
 }
