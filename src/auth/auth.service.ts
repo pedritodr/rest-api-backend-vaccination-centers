@@ -67,6 +67,7 @@ export class AuthService {
       displayName: `${user.name ? user.name : ''} ${
         user.lastname ? user.lastname : ''
       }`,
+      role: user.role,
     };
   }
 
