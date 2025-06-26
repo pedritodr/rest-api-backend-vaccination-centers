@@ -1,11 +1,14 @@
 import { Transform } from 'class-transformer';
 import {
   IsEmail,
+  IsEnum,
   IsOptional,
   IsString,
   IsUrl,
+  IsUUID,
   MinLength,
 } from 'class-validator';
+import { Role } from 'src/common/enums/rol.enum';
 
 export class CreateUserDto {
   @IsOptional()
@@ -20,6 +23,9 @@ export class CreateUserDto {
   @MinLength(1)
   lastname?: string;
 
+  @IsEnum(Role, { message: 'role must be admin or health' })
+  role: Role;
+
   @IsEmail()
   email: string;
 
@@ -33,5 +39,7 @@ export class CreateUserDto {
   @IsUrl()
   urlAvatar?: string;
 
+  @IsOptional()
+  @IsUUID()
   vaccinationCenterId?: string;
 }

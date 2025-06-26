@@ -50,8 +50,9 @@ export class UsersService {
       vaccinationCenter,
       vaccinationCenterId: createUserDto.vaccinationCenterId,
     });
+    const { password, ...createdUser } = await this.userRepository.save(user);
 
-    return await this.userRepository.save(user);
+    return createdUser;
   }
 
   findOneByEmail(email: string) {

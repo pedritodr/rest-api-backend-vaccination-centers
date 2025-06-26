@@ -15,22 +15,22 @@ export class Patient {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true, nullable: true }) // Ahora puede ser null para niños
+  @Column({ unique: true, nullable: true })
   identityDocument: string;
 
   @Column({ nullable: false })
   firstName: string;
 
   @Column({ nullable: false })
-  lastName: string; // Corregido: 'LastName' → 'lastName' (por convención)
+  lastname: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column({ nullable: true })
   email: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   address: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   mobilePhone: string;
 
   @Column({ nullable: false })
@@ -39,7 +39,7 @@ export class Patient {
   // Asociación a otro paciente (representante)
   @ManyToOne(() => Patient, (patient) => patient.dependents, {
     nullable: true,
-    eager: true,
+    eager: false,
   })
   @JoinColumn({ name: 'representativeId' })
   representative?: Patient;

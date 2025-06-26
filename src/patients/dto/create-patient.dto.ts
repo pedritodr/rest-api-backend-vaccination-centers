@@ -1,5 +1,6 @@
 import { Transform } from 'class-transformer';
 import {
+  IsDateString,
   IsEmail,
   IsOptional,
   IsString,
@@ -18,13 +19,14 @@ export class CreatePatientDto {
   @MinLength(1)
   lastname?: string;
 
+  @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
   @IsOptional()
   @Transform(({ value }) => value.trim())
   @IsString()
-  @MinLength(10)
+  @MinLength(6)
   identityDocument: string;
 
   @IsOptional()
@@ -37,9 +39,8 @@ export class CreatePatientDto {
   @IsString()
   mobilePhone: string;
 
-  @IsOptional()
   @Transform(({ value }) => value.trim())
-  @IsString()
+  @IsDateString()
   dateOfBirth: Date;
 
   @IsOptional()

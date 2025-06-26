@@ -53,6 +53,16 @@ export class PatientsService {
     return patient;
   }
 
+  async findByIdentityDocument(id: string) {
+    const patient = await this.patientRepository.findOne({
+      where: { identityDocument: id },
+      relations: ['representative', 'dependents'],
+    });
+    if (!patient) {
+      throw new NotFoundException('Patient not found');
+    }
+    return patient;
+  }
   async update(id: string, updatePatientDto: UpdatePatientDto) {
     const patient = await this.patientRepository.findOne({ where: { id } });
     if (!patient) {

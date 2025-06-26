@@ -11,7 +11,7 @@ export class CreateVaccinationCenterDto {
   @IsString()
   @MinLength(1)
   address?: string;
-
+  @IsOptional()
   @IsEmail()
   email: string;
   @IsOptional()

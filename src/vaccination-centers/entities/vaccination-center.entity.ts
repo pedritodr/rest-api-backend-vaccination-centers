@@ -16,15 +16,15 @@ export class VaccinationCenter {
   @Column({ nullable: true })
   centerName: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   email: string;
 
   @Column({ nullable: false })
   address: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   phone: string;
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   mobilePhone: string;
 
   @DeleteDateColumn({ select: false })

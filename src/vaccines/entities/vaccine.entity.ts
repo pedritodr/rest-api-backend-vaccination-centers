@@ -16,7 +16,7 @@ export class Vaccine {
   id: string;
 
   @Column({ nullable: true })
-  VaccineName: string;
+  vaccineName: string;
 
   @Column({ nullable: false })
   requiredDoses: number;

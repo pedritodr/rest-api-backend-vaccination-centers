@@ -32,6 +32,11 @@ export class PatientsController {
     return this.patientsService.findOne(id);
   }
 
+  @Get(':id/identityDocument')
+  findByIdentityDocument(@Param('id') id: string) {
+    return this.patientsService.findByIdentityDocument(id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
     return this.patientsService.update(id, updatePatientDto);

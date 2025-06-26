@@ -35,7 +35,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Auth(Role.USER)
+  @Auth(Role.HEALTH)
   @Patch('uploadImage/:id')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -64,7 +64,7 @@ export class UsersController {
   ) {
     return this.usersService.uploadImageProfile(id, image);
   }
-  @Auth(Role.USER)
+  @Auth(Role.HEALTH)
   @Get()
   findAll() {
     return this.usersService.findAll();
@@ -81,7 +81,7 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
-  @Auth(Role.USER)
+  @Auth(Role.HEALTH)
   @Patch('updateProfile/:id')
   updateProfile(
     @Param('id') id: string,
@@ -90,7 +90,7 @@ export class UsersController {
     return this.usersService.updateProfile(id, updateProfileDto);
   }
 
-  @Auth(Role.USER)
+  @Auth(Role.HEALTH)
   @Patch('updateEmail/:id')
   updatePasswordEmail(
     @Param('id') id: string,
@@ -99,7 +99,7 @@ export class UsersController {
     return this.usersService.updatePasswordEmail(id, updateEmailDto);
   }
 
-  @Auth(Role.USER)
+  @Auth(Role.HEALTH)
   @Patch('updatePassword/:id')
   updatePassword(
     @Param('id') id: string,

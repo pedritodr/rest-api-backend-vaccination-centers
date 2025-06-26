@@ -21,7 +21,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({ name, email, password, lastname }: RegisterDto) {
+  async register({ name, email, password, lastname, role }: RegisterDto) {
     const user = await this.usersService.findOneByEmail(email);
 
     if (user) {
@@ -31,6 +31,7 @@ export class AuthService {
     await this.usersService.create({
       name,
       lastname,
+      role,
       email,
       password: await bcryptjs.hash(password, 10),
     });

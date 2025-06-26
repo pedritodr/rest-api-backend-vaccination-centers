@@ -1,5 +1,12 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
+import { Role } from 'src/common/enums/rol.enum';
 
 export class RegisterDto {
   @IsOptional()
@@ -21,4 +28,7 @@ export class RegisterDto {
   @IsString()
   @MinLength(6)
   password: string;
+
+  @IsEnum(Role, { message: 'role must be admin or health' })
+  role: Role;
 }
