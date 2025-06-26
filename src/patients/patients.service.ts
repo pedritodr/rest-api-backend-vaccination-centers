@@ -17,20 +17,39 @@ export class PatientsService {
   ) {}
 
   async create(createPatientDto: CreatePatientDto) {
+    const { isChild, identityDocument, representativeId } = createPatientDto;
+
+    // Validación de cédulas
+    if (isChild) {
+      if (!representativeId) {
+        throw new BadRequestException(
+          'El representante es requerido para menores',
+        );
+      }
+      if (!identityDocument) {
+        throw new BadRequestException(
+          'La cédula del representante es requerida para menores',
+        );
+      }
+    } else {
+      if (!identityDocument) {
+        throw new BadRequestException('La cédula del paciente es requerida');
+      }
+    }
+
     let representative: Patient = null;
-    if (createPatientDto.representativeId) {
+    if (representativeId) {
       representative = await this.patientRepository.findOne({
-        where: { id: createPatientDto.representativeId },
+        where: { id: representativeId },
       });
       if (!representative) {
-        throw new BadRequestException('Representative not found');
+        throw new BadRequestException('El representante no existe');
       }
     }
 
     const patient = this.patientRepository.create({
       ...createPatientDto,
-      representative,
-      representativeId: createPatientDto.representativeId,
+      representative, // Se asigna el objeto, TypeORM gestiona el id
     });
 
     return await this.patientRepository.save(patient);
@@ -70,8 +89,14 @@ export class PatientsService {
     }
 
     let representative: Patient = patient.representative;
+
     if ('representativeId' in updatePatientDto) {
       if (updatePatientDto.representativeId) {
+        if (updatePatientDto.representativeId === id) {
+          throw new BadRequestException(
+            'A patient cannot be their own representative',
+          );
+        }
         representative = await this.patientRepository.findOne({
           where: { id: updatePatientDto.representativeId },
         });
@@ -83,7 +108,17 @@ export class PatientsService {
       }
     }
 
-    Object.assign(patient, updatePatientDto, { representative });
+    // Prepara los datos a actualizar
+    const updateData = {
+      ...updatePatientDto,
+      representative, // Esto actualiza la relación
+    };
+
+    // Evita incluir representativeId directamente para no sobrescribir la FK manualmente
+    delete updateData.representativeId;
+
+    Object.assign(patient, updateData);
+
     return await this.patientRepository.save(patient);
   }
 

@@ -147,13 +147,16 @@ export class AppliedDosesService {
   }
 
   async findPatientWithDoses(id: string) {
-    const patient = await this.patientRepository.findOne({ where: { id } });
+    const patient = await this.patientRepository.findOne({
+      where: { identityDocument: id },
+    });
+
     if (!patient) {
       throw new NotFoundException('Patient not found');
     }
 
     const doses = await this.appliedDoseRepository.find({
-      where: { patient: { id } },
+      where: { patient: { id: patient.id } },
       order: { applicationDateTime: 'ASC' },
       relations: [
         'vaccineBatch',

@@ -1,5 +1,6 @@
 import { Transform } from 'class-transformer';
 import {
+  IsBoolean,
   IsDateString,
   IsEmail,
   IsOptional,
@@ -46,4 +47,7 @@ export class CreatePatientDto {
   @IsOptional()
   @IsUUID()
   representativeId?: string;
+
+  @IsBoolean()
+  isChild: boolean;
 }

@@ -69,4 +69,7 @@ export class Patient {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column({ default: false })
+  isChild: boolean;
 }
