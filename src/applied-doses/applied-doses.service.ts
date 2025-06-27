@@ -65,6 +65,7 @@ export class AppliedDosesService {
     return this.appliedDoseRepository.find({
       relations: [
         'patient',
+        'patient.representative',
         'vaccineBatch',
         'vaccinationCenter',
         'applyingUser',
@@ -77,6 +78,7 @@ export class AppliedDosesService {
       where: { id },
       relations: [
         'patient',
+        'patient.representative',
         'vaccineBatch',
         'vaccinationCenter',
         'applyingUser',
