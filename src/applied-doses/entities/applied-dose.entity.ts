@@ -50,7 +50,7 @@ export class AppliedDose {
   isActive: boolean;
 
   // Relación con Patient
-  @ManyToOne(() => Patient, { eager: true, nullable: false })
+  @ManyToOne(() => Patient, { nullable: false }) // <-- ¡Sin eager!
   @JoinColumn({ name: 'patientId' })
   patient: Patient;
 
@@ -58,7 +58,7 @@ export class AppliedDose {
   patientId: string;
 
   // Relación con VaccineBatch
-  @ManyToOne(() => VaccineBatch, { eager: true, nullable: false })
+  @ManyToOne(() => VaccineBatch, { nullable: false })
   @JoinColumn({ name: 'vaccineBatchId' })
   vaccineBatch: VaccineBatch;
 
@@ -66,7 +66,7 @@ export class AppliedDose {
   vaccineBatchId: string;
 
   // Relación con VaccinationCenter
-  @ManyToOne(() => VaccinationCenter, { eager: true, nullable: false })
+  @ManyToOne(() => VaccinationCenter, { nullable: false })
   @JoinColumn({ name: 'vaccinationCenterId' })
   vaccinationCenter: VaccinationCenter;
 
@@ -74,7 +74,7 @@ export class AppliedDose {
   vaccinationCenterId: string;
 
   // Relación con User (quién aplicó la dosis)
-  @ManyToOne(() => User, { eager: true, nullable: false })
+  @ManyToOne(() => User, { nullable: false })
   @JoinColumn({ name: 'applyingUserId' })
   applyingUser: User;
 
