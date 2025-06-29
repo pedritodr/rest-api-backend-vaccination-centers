@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AppliedDosesService } from './applied-doses.service';
 import { CreateAppliedDoseDto } from './dto/create-applied-dose.dto';
@@ -23,8 +24,13 @@ export class AppliedDosesController {
   }
 
   @Get()
-  findAll() {
-    return this.appliedDosesService.findAll();
+  findAll(@Query('isActive') isActive?: string) {
+    // Convierte a booleano si viene en string 'true'/'false'
+    let active: boolean | undefined = undefined;
+    if (isActive === 'true') active = true;
+    else if (isActive === 'false') active = false;
+
+    return this.appliedDosesService.findAll(active);
   }
 
   @Get(':id')
@@ -48,5 +54,10 @@ export class AppliedDosesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.appliedDosesService.remove(id);
+  }
+
+  @Patch('cancel/:id')
+  async cancelDose(@Param('id') id: string) {
+    return this.appliedDosesService.cancelDose(id);
   }
 }

@@ -29,6 +29,7 @@ export class AppliedDosesService {
   ) {}
 
   async create(createAppliedDoseDto: CreateAppliedDoseDto) {
+    // 1. Buscar entidades relacionadas y validar existencia
     const patient = await this.patientRepository.findOne({
       where: { id: createAppliedDoseDto.patientId },
     });
@@ -36,8 +37,12 @@ export class AppliedDosesService {
 
     const vaccineBatch = await this.vaccineBatchRepository.findOne({
       where: { id: createAppliedDoseDto.vaccineBatchId },
+      relations: ['vaccine'],
     });
     if (!vaccineBatch) throw new BadRequestException('Vaccine batch not found');
+
+    const vaccine = vaccineBatch.vaccine;
+    if (!vaccine) throw new BadRequestException('Vaccine not found in batch');
 
     const vaccinationCenter = await this.vaccinationCenterRepository.findOne({
       where: { id: createAppliedDoseDto.vaccinationCenterId },
@@ -50,19 +55,118 @@ export class AppliedDosesService {
     });
     if (!applyingUser) throw new BadRequestException('User not found');
 
+    // 2. Validar cantidad de dosis máxima (requiredDoses)
+    const appliedDosesCount = await this.appliedDoseRepository.count({
+      where: {
+        patient: { id: patient.id },
+        vaccineBatch: { vaccine: { id: vaccine.id } },
+      },
+      relations: ['vaccineBatch', 'vaccineBatch.vaccine'],
+    });
+    if (appliedDosesCount >= vaccine.requiredDoses) {
+      throw new BadRequestException(
+        `El paciente ya ha recibido todas las dosis requeridas para esta vacuna (${vaccine.requiredDoses}).`,
+      );
+    }
+
+    // 3. Validar intervalo entre dosis (doseIntervalDays), solo si ya hay al menos una dosis previa
+    if (appliedDosesCount > 0) {
+      // Obtener la última dosis aplicada de esa vacuna para el paciente
+      const lastDose = await this.appliedDoseRepository.findOne({
+        where: {
+          patient: { id: patient.id },
+          vaccineBatch: { vaccine: { id: vaccine.id } },
+        },
+        relations: ['vaccineBatch', 'vaccineBatch.vaccine'],
+        order: { applicationDateTime: 'DESC' },
+      });
+      if (lastDose) {
+        const lastDate = new Date(lastDose.applicationDateTime);
+        const now = new Date();
+        const daysDiff = Math.floor(
+          (now.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24),
+        );
+        if (daysDiff < vaccine.doseIntervalDays) {
+          throw new BadRequestException(
+            `Deben pasar al menos ${
+              vaccine.doseIntervalDays
+            } días entre dosis. Faltan ${
+              vaccine.doseIntervalDays - daysDiff
+            } días.`,
+          );
+        }
+      }
+    }
+
+    // 4. Validar que la vacuna no esté vencida (expirationDate)
+    const today = new Date();
+    if (vaccineBatch.expirationDate < today) {
+      throw new BadRequestException('El lote de vacuna está vencido');
+    }
+
+    // 5. Validar disponibilidad de dosis en el lote
+    if (vaccineBatch.availableQuantity <= 0) {
+      throw new BadRequestException('No hay dosis disponibles en este lote');
+    }
+
+    // 6. Crear y guardar la nueva dosis aplicada
     const appliedDose = this.appliedDoseRepository.create({
       ...createAppliedDoseDto,
       patient,
       vaccineBatch,
       vaccinationCenter,
       applyingUser,
+      applicationDateTime: today,
     });
 
-    return await this.appliedDoseRepository.save(appliedDose);
+    // 7. Guardar y actualizar el lote de vacunas (disminuir cantidad disponible)
+    const savedAppliedDose = await this.appliedDoseRepository.save(appliedDose);
+    await this.vaccineBatchRepository.update(vaccineBatch.id, {
+      availableQuantity: vaccineBatch.availableQuantity - 1,
+    });
+
+    return savedAppliedDose;
+  }
+  async cancelDose(appliedDoseId: string) {
+    // 1. Buscar la dosis aplicada
+    const appliedDose = await this.appliedDoseRepository.findOne({
+      where: { id: appliedDoseId },
+      relations: ['vaccineBatch'],
+    });
+
+    if (!appliedDose) {
+      throw new NotFoundException('Applied dose not found');
+    }
+
+    // 2. Validar que la dosis no esté ya anulada
+    if (appliedDose.isActive === false) {
+      throw new BadRequestException('Esta dosis ya está anulada');
+    }
+
+    // 3. Sumar nuevamente la dosis a availableQuantity
+    const vaccineBatch = appliedDose.vaccineBatch;
+    if (!vaccineBatch) {
+      throw new NotFoundException('Vaccine batch not found for this dose');
+    }
+
+    await this.vaccineBatchRepository.update(vaccineBatch.id, {
+      availableQuantity: vaccineBatch.availableQuantity + 1,
+    });
+
+    // 4. Anular la dosis aplicada (cambiar isActive a false)
+    await this.appliedDoseRepository.update(appliedDoseId, { isActive: false });
+
+    return { message: 'Dosis aplicada anulada correctamente' };
   }
 
-  findAll() {
+  findAll(isActive?: boolean) {
+    const where: any = {};
+    if (typeof isActive === 'boolean') {
+      where.isActive = isActive;
+    }
+
     return this.appliedDoseRepository.find({
+      where,
       relations: [
         'patient',
         'patient.representative',
