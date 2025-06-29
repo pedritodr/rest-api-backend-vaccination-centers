@@ -36,13 +36,14 @@ export class VaccinesService {
 
   findAll() {
     return this.vaccineRepository.find({
+      where: { isActive: true },
       relations: ['manufacturer'],
     });
   }
 
   async findOne(id: string) {
     const vaccine = await this.vaccineRepository.findOne({
-      where: { id },
+      where: { id, isActive: true },
       relations: ['manufacturer'],
     });
     if (!vaccine) {

@@ -37,13 +37,14 @@ export class VaccineBatchesService {
 
   findAll() {
     return this.vaccineBatchRepository.find({
+      where: { isActive: true },
       relations: ['vaccine'],
     });
   }
 
   async findOne(id: string) {
     const batch = await this.vaccineBatchRepository.findOne({
-      where: { id },
+      where: { id, isActive: true },
       relations: ['vaccine'],
     });
     if (!batch) {

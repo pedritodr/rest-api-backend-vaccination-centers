@@ -57,13 +57,14 @@ export class PatientsService {
 
   findAll() {
     return this.patientRepository.find({
+      where: { isActive: true },
       relations: ['representative', 'dependents'],
     });
   }
 
   async findOne(id: string) {
     const patient = await this.patientRepository.findOne({
-      where: { id },
+      where: { id, isActive: true },
       relations: ['representative', 'dependents'],
     });
     if (!patient) {
@@ -74,7 +75,7 @@ export class PatientsService {
 
   async findByIdentityDocument(id: string) {
     const patient = await this.patientRepository.findOne({
-      where: { identityDocument: id },
+      where: { identityDocument: id, isActive: true },
       relations: ['representative', 'dependents'],
     });
     if (!patient) {

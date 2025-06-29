@@ -90,7 +90,7 @@ export class UsersService {
 
   findById(id: string) {
     return this.userRepository.findOne({
-      where: { id },
+      where: { id, isActive: true },
       select: [
         'id',
         'name',
@@ -104,12 +104,12 @@ export class UsersService {
   }
 
   findAll() {
-    return this.userRepository.find({});
+    return this.userRepository.find({ where: { isActive: true } });
   }
 
   findOne(id: string) {
     return this.userRepository.findOne({
-      where: { id },
+      where: { id, isActive: true },
       relations: ['vaccinationCenter'],
     });
   }

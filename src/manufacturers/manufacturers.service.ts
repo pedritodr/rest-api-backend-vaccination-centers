@@ -36,13 +36,14 @@ export class ManufacturersService {
 
   findAll() {
     return this.manufacturerRepository.find({
+      where: { isActive: true },
       relations: ['country'],
     });
   }
 
   async findOne(id: string) {
     const manufacturer = await this.manufacturerRepository.findOne({
-      where: { id },
+      where: { id, isActive: true },
       relations: ['country'],
     });
     if (!manufacturer) {
