@@ -25,7 +25,6 @@ export class AppliedDosesController {
 
   @Get()
   findAll(@Query('isActive') isActive?: string) {
-    // Convierte a booleano si viene en string 'true'/'false'
     let active: boolean | undefined = undefined;
     if (isActive === 'true') active = true;
     else if (isActive === 'false') active = false;
@@ -38,22 +37,9 @@ export class AppliedDosesController {
     return this.appliedDosesService.findOne(id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateAppliedDoseDto: UpdateAppliedDoseDto,
-  ) {
-    return this.appliedDosesService.update(id, updateAppliedDoseDto);
-  }
-
   @Get(':id/with-doses')
   getPatientWithDoses(@Param('id') id: string) {
     return this.appliedDosesService.findPatientWithDoses(id);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.appliedDosesService.remove(id);
   }
 
   @Patch('cancel/:id')
