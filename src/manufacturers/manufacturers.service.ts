@@ -81,7 +81,7 @@ export class ManufacturersService {
     if (!manufacturer) {
       throw new NotFoundException('Manufacturer not found');
     }
-    await this.manufacturerRepository.softDelete(id);
-    return { message: 'Manufacturer deleted' };
+
+    return await this.manufacturerRepository.update(id, { isActive: false });
   }
 }

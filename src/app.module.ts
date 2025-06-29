@@ -12,6 +12,7 @@ import { ManufacturersModule } from './manufacturers/manufacturers.module';
 import { VaccinesModule } from './vaccines/vaccines.module';
 import { VaccineBatchesModule } from './vaccine-batches/vaccine-batches.module';
 import { AppliedDosesModule } from './applied-doses/applied-doses.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { AppliedDosesModule } from './applied-doses/applied-doses.module';
     VaccinesModule,
     VaccineBatchesModule,
     AppliedDosesModule,
+    ReportsModule,
   ],
   controllers: [],
   providers: [],

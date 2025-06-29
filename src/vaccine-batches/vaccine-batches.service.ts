@@ -77,7 +77,8 @@ export class VaccineBatchesService {
     if (!batch) {
       throw new NotFoundException('Vaccine batch not found');
     }
-    await this.vaccineBatchRepository.softDelete(id);
-    return { message: 'Vaccine batch deleted' };
+    return await this.vaccineBatchRepository.update(id, {
+      isActive: false,
+    });
   }
 }

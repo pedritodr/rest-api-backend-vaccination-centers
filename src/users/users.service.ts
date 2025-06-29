@@ -217,8 +217,14 @@ export class UsersService {
     return { urlAvatar: url };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return await this.userRepository.update(id, { isActive: false });
   }
 
   async findByVaccinationCenter(centerId: string) {

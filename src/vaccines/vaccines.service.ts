@@ -76,7 +76,8 @@ export class VaccinesService {
     if (!vaccine) {
       throw new NotFoundException('Vaccine not found');
     }
-    await this.vaccineRepository.softDelete(id);
-    return { message: 'Vaccine deleted' };
+    return await this.vaccineRepository.update(id, {
+      isActive: false,
+    });
   }
 }
