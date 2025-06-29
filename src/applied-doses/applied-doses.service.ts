@@ -77,6 +77,7 @@ export class AppliedDosesService {
         where: {
           patient: { id: patient.id },
           vaccineBatch: { vaccine: { id: vaccine.id } },
+          isActive: true,
         },
         relations: ['vaccineBatch', 'vaccineBatch.vaccine'],
         order: { applicationDateTime: 'DESC' },
