@@ -45,6 +45,8 @@ export class UsersService {
       }
     }
 
+    createUserDto.password = await bcryptjs.hash(createUserDto.password, 10);
+
     const user = this.userRepository.create({
       ...createUserDto,
       vaccinationCenter,
