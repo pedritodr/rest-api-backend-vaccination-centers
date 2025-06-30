@@ -55,8 +55,8 @@ export class UsersService {
     return createdUser;
   }
 
-  findOneByEmail(email: string) {
-    return this.userRepository.findOneBy({ email });
+  async findOneByEmail(email: string) {
+    return await this.userRepository.findOneBy({ email });
   }
 
   async searchAddressGoogleMapByLatLng(searchGoogleMap: SearchGoogleMap) {
@@ -73,8 +73,8 @@ export class UsersService {
     return data;
   }
 
-  findByEmailWithPassword(email: string) {
-    return this.userRepository.findOne({
+  async findByEmailWithPassword(email: string) {
+    return await this.userRepository.findOne({
       where: { email },
       select: [
         'id',
@@ -88,8 +88,8 @@ export class UsersService {
     });
   }
 
-  findById(id: string) {
-    return this.userRepository.findOne({
+  async findById(id: string) {
+    const user = await this.userRepository.findOne({
       where: { id, isActive: true },
       select: [
         'id',
@@ -101,17 +101,27 @@ export class UsersService {
         'lastname',
       ],
     });
+
+    if (!user) {
+      throw new BadRequestException('user not found');
+    }
+    return user;
   }
 
-  findAll() {
-    return this.userRepository.find({ where: { isActive: true } });
+  async findAll() {
+    return await this.userRepository.find({ where: { isActive: true } });
   }
 
-  findOne(id: string) {
-    return this.userRepository.findOne({
+  async findOne(id: string) {
+    const user = await this.userRepository.findOne({
       where: { id, isActive: true },
       relations: ['vaccinationCenter'],
     });
+
+    if (!user) {
+      throw new BadRequestException('user not found');
+    }
+    return user;
   }
 
   async updatePasswordEmail(id: string, updateEmailDto: UpdateEmailDto) {

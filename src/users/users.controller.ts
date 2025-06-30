@@ -23,6 +23,7 @@ import { ActiveUser } from '../common/decorators/active-user.decorator';
 import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { ParamsCenterUUID, ParamsUUID } from './dto/params-UUID.dto';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -72,19 +73,19 @@ export class UsersController {
 
   @Auth(Role.ADMIN)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param() { id }: ParamsUUID) {
     return this.usersService.findOne(id);
   }
   @Auth(Role.ADMIN)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param() { id }: ParamsUUID, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Auth(Role.HEALTH)
   @Patch('updateProfile/:id')
   updateProfile(
-    @Param('id') id: string,
+    @Param() { id }: ParamsUUID,
     @Body() updateProfileDto: UpdateProfileDto,
   ) {
     return this.usersService.updateProfile(id, updateProfileDto);
@@ -93,7 +94,7 @@ export class UsersController {
   @Auth(Role.HEALTH)
   @Patch('updateEmail/:id')
   updatePasswordEmail(
-    @Param('id') id: string,
+    @Param() { id }: ParamsUUID,
     @Body() updateEmailDto: UpdateEmailDto,
   ) {
     return this.usersService.updatePasswordEmail(id, updateEmailDto);
@@ -102,7 +103,7 @@ export class UsersController {
   @Auth(Role.HEALTH)
   @Patch('updatePassword/:id')
   updatePassword(
-    @Param('id') id: string,
+    @Param() { id }: ParamsUUID,
     @Body() updatePasswordDto: UpdatePasswordDto,
   ) {
     return this.usersService.updatePassword(id, updatePasswordDto);
@@ -110,13 +111,13 @@ export class UsersController {
 
   @Auth(Role.ADMIN)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param() { id }: ParamsUUID) {
     return this.usersService.remove(id);
   }
 
   @Auth(Role.ADMIN)
   @Get('/center/:centerId')
-  findByVaccinationCenter(@Param('centerId') centerId: string) {
+  findByVaccinationCenter(@Param() { centerId }: ParamsCenterUUID) {
     return this.usersService.findByVaccinationCenter(centerId);
   }
 }
