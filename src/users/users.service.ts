@@ -240,7 +240,13 @@ export class UsersService {
   }
 
   async findByVaccinationCenter(centerId: string) {
-    return this.userRepository.find({
+    const center = await this.vaccinationCenterRepository.findOne({
+      where: { id: centerId, isActive: true },
+    });
+    if (!center) {
+      throw new NotFoundException('Center not found');
+    }
+    return await this.userRepository.find({
       where: { vaccinationCenterId: centerId },
       relations: ['vaccinationCenter'],
     });
