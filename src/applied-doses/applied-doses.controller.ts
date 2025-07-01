@@ -34,17 +34,17 @@ export class AppliedDosesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') { id }: UUIDAppliedDose) {
+  findOne(@Param() { id }: UUIDAppliedDose) {
     return this.appliedDosesService.findOne(id);
   }
 
   @Get(':id/with-doses')
-  getPatientWithDoses(@Param('id') { id }: UUIDAppliedDose) {
+  getPatientWithDoses(@Param() { id }: UUIDAppliedDose) {
     return this.appliedDosesService.findPatientWithDoses(id);
   }
 
   @Patch('cancel/:id')
-  async cancelDose(@Param('id') { id }: UUIDAppliedDose) {
+  async cancelDose(@Param() { id }: UUIDAppliedDose) {
     return this.appliedDosesService.cancelDose(id);
   }
 }

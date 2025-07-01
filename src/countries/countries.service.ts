@@ -20,10 +20,14 @@ export class CountriesService {
     return this.countryRepository.find({ where: { isActive: true } });
   }
 
-  findOne(id: string) {
-    return this.countryRepository.findOne({
+  async findOne(id: string) {
+    const country = await this.countryRepository.findOne({
       where: { id, isActive: true },
     });
+    if (!country) {
+      throw new UnauthorizedException('id is wrong');
+    }
+    return country;
   }
 
   async update(id: string, updateCountryDto: UpdateCountryDto) {

@@ -29,20 +29,20 @@ export class VaccinesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') { id }: UUIDVaccine) {
+  findOne(@Param() { id }: UUIDVaccine) {
     return this.vaccinesService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') { id }: UUIDVaccine,
+    @Param() { id }: UUIDVaccine,
     @Body() updateVaccineDto: UpdateVaccineDto,
   ) {
     return this.vaccinesService.update(id, updateVaccineDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') { id }: UUIDVaccine) {
+  remove(@Param() { id }: UUIDVaccine) {
     return this.vaccinesService.remove(id);
   }
 }

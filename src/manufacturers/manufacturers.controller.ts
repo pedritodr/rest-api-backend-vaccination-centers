@@ -29,20 +29,20 @@ export class ManufacturersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') { id }: UUIDManufacturer) {
+  findOne(@Param() { id }: UUIDManufacturer) {
     return this.manufacturersService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') { id }: UUIDManufacturer,
+    @Param() { id }: UUIDManufacturer,
     @Body() updateManufacturerDto: UpdateManufacturerDto,
   ) {
     return this.manufacturersService.update(id, updateManufacturerDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') { id }: UUIDManufacturer) {
+  remove(@Param() { id }: UUIDManufacturer) {
     return this.manufacturersService.remove(id);
   }
 }

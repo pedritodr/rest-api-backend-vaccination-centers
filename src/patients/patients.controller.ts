@@ -29,25 +29,25 @@ export class PatientsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') { id }: UUIDPatients) {
+  findOne(@Param() { id }: UUIDPatients) {
     return this.patientsService.findOne(id);
   }
 
   @Get(':id/identityDocument')
-  findByIdentityDocument(@Param('id') { id }: UUIDPatients) {
+  findByIdentityDocument(@Param() { id }: UUIDPatients) {
     return this.patientsService.findByIdentityDocument(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') { id }: UUIDPatients,
+    @Param() { id }: UUIDPatients,
     @Body() updatePatientDto: UpdatePatientDto,
   ) {
     return this.patientsService.update(id, updatePatientDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') { id }: UUIDPatients) {
+  remove(@Param() { id }: UUIDPatients) {
     return this.patientsService.remove(id);
   }
 }

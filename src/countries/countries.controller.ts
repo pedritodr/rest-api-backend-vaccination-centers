@@ -29,20 +29,20 @@ export class CountriesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') { id }: UUIDCountry) {
+  findOne(@Param() { id }: UUIDCountry) {
     return this.countriesService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') { id }: UUIDCountry,
+    @Param() { id }: UUIDCountry,
     @Body() updateCountryDto: UpdateCountryDto,
   ) {
     return this.countriesService.update(id, updateCountryDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') { id }: UUIDCountry) {
+  remove(@Param() { id }: UUIDCountry) {
     return this.countriesService.remove(id);
   }
 }

@@ -78,17 +78,14 @@ export class UsersController {
   }
   @Auth(Role.ADMIN)
   @Patch(':id')
-  update(
-    @Param('id') { id }: ParamsUUID,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+  update(@Param() { id }: ParamsUUID, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Auth(Role.HEALTH)
   @Patch('updateProfile/:id')
   updateProfile(
-    @Param('id') { id }: ParamsUUID,
+    @Param() { id }: ParamsUUID,
     @Body() updateProfileDto: UpdateProfileDto,
   ) {
     return this.usersService.updateProfile(id, updateProfileDto);
@@ -97,7 +94,7 @@ export class UsersController {
   @Auth(Role.HEALTH)
   @Patch('updateEmail/:id')
   updatePasswordEmail(
-    @Param('id') { id }: ParamsUUID,
+    @Param() { id }: ParamsUUID,
     @Body() updateEmailDto: UpdateEmailDto,
   ) {
     return this.usersService.updatePasswordEmail(id, updateEmailDto);
@@ -106,7 +103,7 @@ export class UsersController {
   @Auth(Role.HEALTH)
   @Patch('updatePassword/:id')
   updatePassword(
-    @Param('id') { id }: ParamsUUID,
+    @Param() { id }: ParamsUUID,
     @Body() updatePasswordDto: UpdatePasswordDto,
   ) {
     return this.usersService.updatePassword(id, updatePasswordDto);
@@ -114,13 +111,13 @@ export class UsersController {
 
   @Auth(Role.ADMIN)
   @Delete(':id')
-  remove(@Param('id') { id }: ParamsUUID) {
+  remove(@Param() { id }: ParamsUUID) {
     return this.usersService.remove(id);
   }
 
   @Auth(Role.ADMIN)
   @Get('/center/:centerId')
-  findByVaccinationCenter(@Param('centerId') { centerId }: ParamsCenterUUID) {
+  findByVaccinationCenter(@Param() { centerId }: ParamsCenterUUID) {
     return this.usersService.findByVaccinationCenter(centerId);
   }
 }

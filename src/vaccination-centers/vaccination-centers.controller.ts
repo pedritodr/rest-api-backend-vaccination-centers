@@ -31,13 +31,13 @@ export class VaccinationCentersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') { id }: UUIDVaccinationCenter) {
+  findOne(@Param() { id }: UUIDVaccinationCenter) {
     return this.vaccinationCentersService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') { id }: UUIDVaccinationCenter,
+    @Param() { id }: UUIDVaccinationCenter,
     @Body() updateVaccinationCenterDto: UpdateVaccinationCenterDto,
   ) {
     return this.vaccinationCentersService.update(
@@ -47,7 +47,7 @@ export class VaccinationCentersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') { id }: UUIDVaccinationCenter) {
+  remove(@Param() { id }: UUIDVaccinationCenter) {
     return this.vaccinationCentersService.remove(id);
   }
 }

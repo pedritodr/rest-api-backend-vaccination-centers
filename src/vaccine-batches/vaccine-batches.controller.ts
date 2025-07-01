@@ -29,20 +29,20 @@ export class VaccineBatchesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') { id }: UUIDVaccineBatches) {
+  findOne(@Param() { id }: UUIDVaccineBatches) {
     return this.vaccineBatchesService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') { id }: UUIDVaccineBatches,
+    @Param() { id }: UUIDVaccineBatches,
     @Body() updateVaccineBatchDto: UpdateVaccineBatchDto,
   ) {
     return this.vaccineBatchesService.update(id, updateVaccineBatchDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') { id }: UUIDVaccineBatches) {
+  remove(@Param() { id }: UUIDVaccineBatches) {
     return this.vaccineBatchesService.remove(id);
   }
 }

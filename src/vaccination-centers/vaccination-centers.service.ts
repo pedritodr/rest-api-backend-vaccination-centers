@@ -21,10 +21,14 @@ export class VaccinationCentersService {
     });
   }
 
-  findOne(id: string) {
-    return this.vaccianationCenterRepository.findOne({
+  async findOne(id: string) {
+    const vaccinationCenter = await this.vaccianationCenterRepository.findOne({
       where: { id, isActive: true },
     });
+    if (!vaccinationCenter) {
+      throw new UnauthorizedException('id is wrong');
+    }
+    return vaccinationCenter;
   }
 
   async update(
