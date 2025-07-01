@@ -11,6 +11,7 @@ import { VaccinesService } from './vaccines.service';
 import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UUIDVaccine } from './dto/params-UUID.dto';
 @ApiBearerAuth()
 @ApiTags('Vaccines')
 @Controller('vaccines')
@@ -28,17 +29,20 @@ export class VaccinesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') { id }: UUIDVaccine) {
     return this.vaccinesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVaccineDto: UpdateVaccineDto) {
+  update(
+    @Param('id') { id }: UUIDVaccine,
+    @Body() updateVaccineDto: UpdateVaccineDto,
+  ) {
     return this.vaccinesService.update(id, updateVaccineDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') { id }: UUIDVaccine) {
     return this.vaccinesService.remove(id);
   }
 }

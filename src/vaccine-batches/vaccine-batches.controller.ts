@@ -11,6 +11,7 @@ import { VaccineBatchesService } from './vaccine-batches.service';
 import { CreateVaccineBatchDto } from './dto/create-vaccine-batch.dto';
 import { UpdateVaccineBatchDto } from './dto/update-vaccine-batch.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UUIDVaccineBatches } from './dto/params-UUID.dto';
 @ApiBearerAuth()
 @ApiTags('Vaccine batches')
 @Controller('vaccine-batches')
@@ -28,20 +29,20 @@ export class VaccineBatchesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') { id }: UUIDVaccineBatches) {
     return this.vaccineBatchesService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') { id }: UUIDVaccineBatches,
     @Body() updateVaccineBatchDto: UpdateVaccineBatchDto,
   ) {
     return this.vaccineBatchesService.update(id, updateVaccineBatchDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') { id }: UUIDVaccineBatches) {
     return this.vaccineBatchesService.remove(id);
   }
 }

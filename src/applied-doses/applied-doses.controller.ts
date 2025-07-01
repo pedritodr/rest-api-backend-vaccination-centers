@@ -12,6 +12,7 @@ import { AppliedDosesService } from './applied-doses.service';
 import { CreateAppliedDoseDto } from './dto/create-applied-dose.dto';
 import { UpdateAppliedDoseDto } from './dto/update-applied-dose.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UUIDAppliedDose } from './dto/params-UUID.dto';
 @ApiBearerAuth()
 @ApiTags('Applied doses')
 @Controller('applied-doses')
@@ -33,17 +34,17 @@ export class AppliedDosesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') { id }: UUIDAppliedDose) {
     return this.appliedDosesService.findOne(id);
   }
 
   @Get(':id/with-doses')
-  getPatientWithDoses(@Param('id') id: string) {
+  getPatientWithDoses(@Param('id') { id }: UUIDAppliedDose) {
     return this.appliedDosesService.findPatientWithDoses(id);
   }
 
   @Patch('cancel/:id')
-  async cancelDose(@Param('id') id: string) {
+  async cancelDose(@Param('id') { id }: UUIDAppliedDose) {
     return this.appliedDosesService.cancelDose(id);
   }
 }

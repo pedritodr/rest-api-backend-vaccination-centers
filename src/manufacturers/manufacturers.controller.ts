@@ -11,6 +11,7 @@ import { ManufacturersService } from './manufacturers.service';
 import { CreateManufacturerDto } from './dto/create-manufacturer.dto';
 import { UpdateManufacturerDto } from './dto/update-manufacturer.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UUIDManufacturer } from './dto/params-UUID.dto';
 @ApiBearerAuth()
 @ApiTags('Manufacturers')
 @Controller('manufacturers')
@@ -28,20 +29,20 @@ export class ManufacturersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') { id }: UUIDManufacturer) {
     return this.manufacturersService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') { id }: UUIDManufacturer,
     @Body() updateManufacturerDto: UpdateManufacturerDto,
   ) {
     return this.manufacturersService.update(id, updateManufacturerDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') { id }: UUIDManufacturer) {
     return this.manufacturersService.remove(id);
   }
 }
