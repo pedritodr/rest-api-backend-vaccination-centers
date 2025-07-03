@@ -26,11 +26,6 @@ export class PatientsService {
           'El representante es requerido para menores',
         );
       }
-      if (!identityDocument) {
-        throw new BadRequestException(
-          'La cédula del representante es requerida para menores',
-        );
-      }
     } else {
       if (!identityDocument) {
         throw new BadRequestException('La cédula del paciente es requerida');

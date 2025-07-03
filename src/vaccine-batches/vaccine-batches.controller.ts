@@ -11,7 +11,12 @@ import { VaccineBatchesService } from './vaccine-batches.service';
 import { CreateVaccineBatchDto } from './dto/create-vaccine-batch.dto';
 import { UpdateVaccineBatchDto } from './dto/update-vaccine-batch.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { UUIDVaccineBatches } from './dto/params-UUID.dto';
+import {
+  UUIDVaccineBatches,
+  VaccineBatchesStatus,
+} from './dto/params-UUID.dto';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { Role } from '../common/enums/rol.enum';
 @ApiBearerAuth()
 @ApiTags('Vaccine batches')
 @Controller('vaccine-batches')
@@ -44,5 +49,10 @@ export class VaccineBatchesController {
   @Delete(':id')
   remove(@Param() { id }: UUIDVaccineBatches) {
     return this.vaccineBatchesService.remove(id);
+  }
+  @Auth(Role.ADMIN)
+  @Patch(':id/status/:status')
+  async updateStatus(@Param() { id, status }: VaccineBatchesStatus) {
+    return this.vaccineBatchesService.updateStatus(id, status);
   }
 }

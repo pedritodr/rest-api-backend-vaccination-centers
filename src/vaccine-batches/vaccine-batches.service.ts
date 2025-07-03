@@ -9,6 +9,7 @@ import { VaccineBatch } from './entities/vaccine-batch.entity';
 import { Vaccine } from 'src/vaccines/entities/vaccine.entity';
 import { CreateVaccineBatchDto } from './dto/create-vaccine-batch.dto';
 import { UpdateVaccineBatchDto } from './dto/update-vaccine-batch.dto';
+import { BatchStatus } from 'src/common/enums/batchStatus.enum';
 
 @Injectable()
 export class VaccineBatchesService {
@@ -38,7 +39,12 @@ export class VaccineBatchesService {
   findAll() {
     return this.vaccineBatchRepository.find({
       where: { isActive: true },
-      relations: ['vaccine'],
+      order: { expirationDate: 'ASC' }, // Ordena por fecha de vencimiento ASC
+      relations: [
+        'vaccine',
+        'vaccine.manufacturer',
+        'vaccine.manufacturer.country',
+      ],
     });
   }
 
@@ -81,5 +87,26 @@ export class VaccineBatchesService {
     return await this.vaccineBatchRepository.update(id, {
       isActive: false,
     });
+  }
+
+  async updateStatus(id: string, status: BatchStatus) {
+    const batch = await this.vaccineBatchRepository.findOne({
+      where: { id, isActive: true },
+    });
+    if (!batch) throw new NotFoundException('batch not found');
+
+    const now = new Date();
+    let update: any = { status };
+
+    if (status === 1) {
+      update.dateLoteOpen = now;
+    }
+    if (status === 2) {
+      update.dateLoteClose = now;
+    }
+
+    await this.vaccineBatchRepository.update(id, update);
+
+    return { message: 'status updated Successfully' };
   }
 }

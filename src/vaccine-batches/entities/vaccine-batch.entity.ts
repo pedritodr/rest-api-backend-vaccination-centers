@@ -1,3 +1,4 @@
+import { BatchStatus } from '../../common/enums/batchStatus.enum';
 import { Vaccine } from '../../vaccines/entities/vaccine.entity';
 import {
   Column,
@@ -55,4 +56,13 @@ export class VaccineBatch {
 
   @Column()
   vaccineId: string;
+
+  @Column({ type: 'enum', enum: BatchStatus, default: BatchStatus.CREATED })
+  status: BatchStatus;
+
+  @Column({ type: 'timestamp', nullable: true })
+  dateLoteOpen?: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  dateLoteClose?: Date;
 }
