@@ -45,7 +45,7 @@ export class AppliedDosesService {
       throw new BadRequestException('Vaccine batch with sealed status');
 
     if (vaccineBatch.status === 2)
-      throw new BadRequestException('vaccine batch with closed status');
+      throw new BadRequestException('Vaccine batch with closed status');
 
     const vaccine = vaccineBatch.vaccine;
     if (!vaccine) throw new BadRequestException('Vaccine not found in batch');
