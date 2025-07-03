@@ -41,6 +41,12 @@ export class AppliedDosesService {
     });
     if (!vaccineBatch) throw new BadRequestException('Vaccine batch not found');
 
+    if (vaccineBatch.status === 0)
+      throw new BadRequestException('Vaccine batch with sealed status');
+
+    if (vaccineBatch.status === 2)
+      throw new BadRequestException('vaccine batch with closed status');
+
     const vaccine = vaccineBatch.vaccine;
     if (!vaccine) throw new BadRequestException('Vaccine not found in batch');
 
@@ -123,9 +129,16 @@ export class AppliedDosesService {
 
     // 7. Guardar y actualizar el lote de vacunas (disminuir cantidad disponible)
     const savedAppliedDose = await this.appliedDoseRepository.save(appliedDose);
-    await this.vaccineBatchRepository.update(vaccineBatch.id, {
+    const queryUpdateBatch = {
       availableQuantity: vaccineBatch.availableQuantity - 1,
-    });
+    };
+
+    if (vaccineBatch.availableQuantity - 1 === 0) {
+      queryUpdateBatch['status'] = 2;
+      const now = new Date();
+      queryUpdateBatch['dateLoteClose'] = now;
+    }
+    await this.vaccineBatchRepository.update(vaccineBatch.id, queryUpdateBatch);
 
     return savedAppliedDose;
   }
