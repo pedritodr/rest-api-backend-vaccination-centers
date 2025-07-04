@@ -36,6 +36,9 @@ export class Patient {
   @Column({ nullable: false })
   dateOfBirth: Date;
 
+  @Column({ nullable: false })
+  age: number;
+
   // Asociación a otro paciente (representante)
   @ManyToOne(() => Patient, (patient) => patient.dependents, {
     nullable: true,

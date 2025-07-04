@@ -3,6 +3,7 @@ import {
   IsBoolean,
   IsDateString,
   IsEmail,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -50,4 +51,7 @@ export class CreatePatientDto {
 
   @IsBoolean()
   isChild: boolean;
+
+  @IsNumber()
+  age: number;
 }
