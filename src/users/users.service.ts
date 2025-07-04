@@ -36,6 +36,11 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     let vaccinationCenter: VaccinationCenter = null;
 
+    const findUser = await this.findOneByEmail(createUserDto.email);
+    if (findUser) {
+      throw new BadRequestException('The email is already in use');
+    }
+
     if (createUserDto.vaccinationCenterId) {
       vaccinationCenter = await this.vaccinationCenterRepository.findOne({
         where: { id: createUserDto.vaccinationCenterId },
