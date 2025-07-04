@@ -36,7 +36,7 @@ export class Patient {
   @Column({ nullable: false })
   dateOfBirth: Date;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   age: number;
 
   // Asociación a otro paciente (representante)
