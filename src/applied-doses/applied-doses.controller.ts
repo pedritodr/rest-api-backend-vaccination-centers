@@ -43,6 +43,14 @@ export class AppliedDosesController {
     return this.appliedDosesService.findPatientWithDoses(id);
   }
 
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateAppliedDoseDto: UpdateAppliedDoseDto,
+  ) {
+    return this.appliedDosesService.update(id, updateAppliedDoseDto);
+  }
+
   @Patch('cancel/:id')
   async cancelDose(@Param() { id }: UUIDAppliedDose) {
     return this.appliedDosesService.cancelDose(id);
