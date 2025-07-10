@@ -54,6 +54,7 @@ export class ReportsService {
   // 2. Disponibilidad de lotes de vacunas
   async getVaccineBatchAvailability() {
     return this.vaccineBatchRepository.find({
+      where: { isActive: true },
       relations: [
         'vaccine',
         'vaccine.manufacturer',
