@@ -27,6 +27,7 @@ import { ReportsModule } from './reports/reports.module';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
+      url: process.env.DATABASE_URL,
       autoLoadEntities: true,
       synchronize: true,
       ssl: process.env.POSTGRES_SSL === 'true',
