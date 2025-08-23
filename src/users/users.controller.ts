@@ -30,7 +30,7 @@ import { ParamsCenterUUID, ParamsUUID } from './dto/params-UUID.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  
+  @Auth(Role.ADMIN)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
